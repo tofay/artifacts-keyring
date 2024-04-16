@@ -48,10 +48,6 @@ Once `artifacts-keyring` is installed, to consume a package, use the following `
 pip install <package_name> --index-url https://pkgs.dev.azure.com/<org_name>/_packaging/<feed_name>/pypi/simple
 ```
 
-### Environment variables
-
-- `ARTIFACTS_KEYRING_NONINTERACTIVE_MODE`: Controls whether the underlying credential provider can issue interactive prompts. By default interactive they can, set this variable to "true" to make it non-interactive. 
-
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

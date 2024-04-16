@@ -93,24 +93,14 @@ def _no_auth_required(url):
     )
 
 
-_NON_INTERACTIVE_VAR_NAME = "ARTIFACTS_KEYRING_NONINTERACTIVE_MODE"
-
-
 def get_azure_token(url):
     # Public feed short circuit: return nothing if not getting credentials for the upload endpoint
     # (which always requires auth) and the endpoint is public (can authenticate without credentials).
     if not _is_upload_endpoint(url) and _no_auth_required(url):
         return None
 
-    # If the environment variable is not set to "true", we will allow interactive login
-    non_interactive = (
-        os.environ.get(_NON_INTERACTIVE_VAR_NAME, "false").lower() == "true"
-    )
-
     try:
-        credential = DefaultAzureCredential(
-            exclude_interactive_browser_credential=non_interactive
-        ).get_token(ADO_SCOPE)
+        credential = DefaultAzureCredential().get_token(ADO_SCOPE)
         return credential.token
     except Exception as e:
         warnings.warn("Failed to retrieve Azure credential: {0}".format(e))
