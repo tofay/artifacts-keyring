@@ -1,14 +1,10 @@
-## NOTE
-'artifacts-keyring' is a relatively thin wrapper around [artifacts-credprovider](https://github.com/microsoft/artifacts-credprovider).  Make sure to also look at that repository for more information about different scenarios. For example:
-
-* [Environment variable to explicitly override tokens](https://github.com/microsoft/artifacts-credprovider)
-* [Safely using credentials in docker](https://github.com/dotnet/dotnet-docker/blob/master/documentation/scenarios/nuget-credentials.md#using-the-azure-artifact-credential-provider)
-
 # artifacts-keyring
 
 The `artifacts-keyring` package provides authentication for publishing or consuming Python packages to or from Azure Artifacts feeds within [Azure DevOps](https://azure.com/devops).
 
 This package is an extension to [keyring](https://pypi.org/project/keyring), which will automatically find and use it once installed.
+
+It uses azure-identity's [DefaultAzureCredential](https://learn.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) to authenticate with Azure Artifacts.
 
 Both [pip](https://pypi.org/project/pip) and [twine](https://pypi.org/project/twine) will use `keyring` to
 find credentials.
@@ -30,7 +26,13 @@ To use `artifacts-keyring` to set up authentication between `pip`/`twine` and Az
 * pip version **19.2** or higher
 * twine version **1.13.0** or higher
 * python version **3.0** or higher
-* .Net runtime 6.0.X or later is installed. Refer to [here](https://learn.microsoft.com/dotnet/core/install/) for installation guideline.
+
+#### Poetry
+
+If you've installed poetry using pipx, you can add this package to your poetry environment by running the following command:
+```
+pipx inject poetry artifacts-keyring
+```
 
 ### Publishing packages to an Azure Artifacts feed
 Once `artifacts-keyring` is installed, to publish a package, use the following `twine` command, replacing **<org_name>** and **<feed_name>** with your own:
@@ -46,12 +48,9 @@ Once `artifacts-keyring` is installed, to consume a package, use the following `
 pip install <package_name> --index-url https://pkgs.dev.azure.com/<org_name>/_packaging/<feed_name>/pypi/simple
 ```
 
-## Advanced configuration
-The `artifacts-keyring` package is layered on top of our [Azure Artifacts Credential Provider](https://github.com/microsoft/artifacts-credprovider). Check out that link to the GitHub repo for more information on configuration options.
-
 ### Environment variables
 
-- `ARTIFACTS_KEYRING_NONINTERACTIVE_MODE`: Controls whether the underlying credential provider can issue interactive prompts.
+- `ARTIFACTS_KEYRING_NONINTERACTIVE_MODE`: Controls whether the underlying credential provider can issue interactive prompts. By default interactive they can, set this variable to "true" to make it non-interactive. 
 
 ## Contributing
 
